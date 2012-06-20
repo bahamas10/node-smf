@@ -64,3 +64,39 @@ module.exports.svcs = function(service, callback) {
     }
   });
 };
+
+/**
+ * Exposes information from svcadm(1M)
+ */
+module.exports.svcadm = function(action, service, options, callback) {
+  var svcadm, args, out = '', err = '', options = options || {};
+
+  // Check for arguments
+  if (!service) throw new Error('Not enough arguments supplied');
+  if (typeof options === 'function') {
+    callback = options;
+    options = {};
+  } else {
+    callback = callback || function() {};
+  }
+
+  // Construct args
+  args = [action];
+  if (options.temporary) args = args.concat('-t');
+  if (options.wait) args = args.concat('-s');
+  args = args.concat(service);
+
+  // Spawn the call
+  svcadm = spawn('svcadm', args);
+  svcadm.stdout.on('data', function(data) {
+    out += data;
+  });
+  svcadm.stderr.on('data', function(data) {
+    err += data;
+  });
+
+  svcadm.on('exit', function(code) {
+    if (err) return callback(err, code);
+    return callback(null, code);
+  });
+};
