@@ -40,19 +40,42 @@ on the system.
 Call `smf.svcs` with a service name and a callback to get information
 about the given service.
 
+---
+
+### smf.svcadm('action', 'name')
+
+Do a given action to the given name.  For example `smf.svcadm('disable', 'apache');`.
+This command will return immediately, without waiting for the service to be disabled
+fully, and without checking error codes.
+
+### smf.svcadm('action', 'name', {option:value}, callback(err, code))
+
+Do a given action to the given name with additional options.  When the
+command is finished the callback will be called with an error message
+(or null) as the first argument, and the exit code of the svcadm(1M)
+call.
+
+_Options_
+1. {temporary:true} - Temporarily disable or enable a service
+2. {wait:true} - Wait for the service to change state before executing `callback`
+
+Options and callbacks are optional. See EXAMPLES for more information.
+
 Example
 -------
+
+### smf.svcs()
 
 ``` js
 var smf = require('smf');
 smf.svcs(function(err, services) {
-        if (err) throw err;
-        console.log('%d services found.', services.length);
-        console.log('Looking up last service found...');
-        smf.svcs(services[services.length - 1], function(err, svc) {
-                if (err) throw err;
-                console.log(svc);
-        });
+  if (err) throw err;
+  console.log('%d services found.', services.length);
+  console.log('Looking up last service found...');
+  smf.svcs(services[services.length - 1], function(err, svc) {
+    if (err) throw err;
+    console.log(svc);
+  });
 });
 ```
 
@@ -67,6 +90,33 @@ smf.svcs(function(err, services) {
         logfile: '/var/svc/log/system-boot-archive:default.log',
         restarter: 'svc:/system/svc/restarter:default',
         dependency: 'require_all/none svc:/system/filesystem/root (online)' }
+
+### smf.svcadm()
+
+``` js
+var svcadm = require('smf').svcadm;
+
+// disable nginx without wating or confirmation
+svcadm('disable', 'nginx');
+
+// enable nginx and callback with results
+svcadm('enable', 'nginx', function(err, code) {
+  if (err) throw err;
+  console.log('Return code %d', code);
+});
+
+// disable nginx, wait for it to enter 'enabled' state, and callback
+svcadm('disable', 'nginx', {wait:true}, function(err, code) {
+  if (err) throw err;
+  console.log('Return code %d', code);
+});
+
+// restart nginx without waiting or confirmation
+svcadm('restart', 'nginx');
+
+// temporarily disable nginx without waiting or confirmation
+svcadm('disable', 'nginx', {temporary:true});
+```
 
 Command Line
 ------------
