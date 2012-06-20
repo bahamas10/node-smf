@@ -84,7 +84,7 @@ Example
     svc:/milestone/devices:default
     svc:/system/device/local:default
     svc:/system/boot-archive:default
-    root@dave.voxer.com# smf svc:/system/boot-archive:default | json -i
+    root@dave.voxer.com# smf svc:/system/boot-archive:default | json
     {
       "fmri": "svc:/system/boot-archive:default",
       "name": "check boot archive content",
