@@ -84,16 +84,18 @@ Example
     svc:/milestone/devices:default
     svc:/system/device/local:default
     svc:/system/boot-archive:default
-    root@dave.voxer.com# smf svc:/system/boot-archive:default | json -i
-    { fmri: 'svc:/system/boot-archive:default',
-        name: 'check boot archive content',
-        enabled: 'true',
-        state: 'online',
-        next_state: 'none',
-        state_time: 'Wed Apr 25 01:32:33 2012',
-        logfile: '/var/svc/log/system-boot-archive:default.log',
-        restarter: 'svc:/system/svc/restarter:default',
-        dependency: 'require_all/none svc:/system/filesystem/root (online)' }
+    root@dave.voxer.com# smf svc:/system/boot-archive:default | json
+    {
+      "fmri": "svc:/system/boot-archive:default",
+      "name": "check boot archive content",
+      "enabled": "true",
+      "state": "online",
+      "next_state": "none",
+      "state_time": "Wed Apr 25 01:32:33 2012",
+      "logfile": "/var/svc/log/system-boot-archive:default.log",
+      "restarter": "svc:/system/svc/restarter:default",
+      "dependency": "require_all/none svc:/system/filesystem/root (online)"
+    }
 
 License
 -------
