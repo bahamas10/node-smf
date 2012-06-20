@@ -6,7 +6,7 @@ Expose smf(5) to Node.js for Solaris/Illumos based operating systems
 Install
 ------
 
-Install locally to use as a madule
+Install locally to use as a module
 
     npm install smf
 
