@@ -56,8 +56,9 @@ command is finished the callback will be called with an error message
 call.
 
 _Options_
-1. {temporary:true} - Temporarily disable or enable a service
-2. {wait:true} - Wait for the service to change state before executing `callback`
+
+1.  `{temporary:true}` - Temporarily disable or enable a service
+2.  `{wait:true}` - Wait for the service to change state before executing `callback`
 
 Options and callbacks are optional. See EXAMPLES for more information.
 
