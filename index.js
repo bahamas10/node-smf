@@ -59,7 +59,7 @@ module.exports.svcs = function(service, callback) {
  * Exposes information from svcadm(1M)
  */
 module.exports.svcadm = function(action, service, options, callback) {
-  var args, options = options || {};
+  options = options || {};
 
   // Check for arguments
   if (!service) throw new Error('Not enough arguments supplied');
@@ -71,7 +71,7 @@ module.exports.svcadm = function(action, service, options, callback) {
   }
 
   // Construct args
-  args = [action];
+  var args = [action];
   if (options.temporary) args = args.concat('-t');
   if (options.wait) args = args.concat('-s');
   args = args.concat(service);
