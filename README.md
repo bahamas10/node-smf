@@ -132,11 +132,14 @@ object of information about the given service.
 Example
 -------
 
+Get a list of fmri's on the system
+
     root@dave.voxer.com# smf | tail -3
     svc:/milestone/devices:default
     svc:/system/device/local:default
     svc:/system/boot-archive:default
 
+Get information about the nginx service
 
     root@dave.voxer.com# smf nginx | json
 
@@ -157,11 +160,11 @@ Example
   ],
   "process": [
     {
-      "pid": "568",
+      "pid": 568,
       "cmd": "/usr/local/nginx/sbin/nginx -c /usr/local/nginx/conf/nginx.conf"
     },
     {
-      "pid": "569",
+      "pid": 569,
       "cmd": "/usr/local/nginx/sbin/nginx -c /usr/local/nginx/conf/nginx.conf"
     }
   ]
