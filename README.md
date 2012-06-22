@@ -68,12 +68,13 @@ Example
 ### smf.svcs()
 
 ``` js
-var smf = require('smf');
-smf.svcs(function(err, services) {
-  if (err) throw err;
+var svcs = require('smf').svcs;
+svcs(function(err, services) {
+  // services => list of all service fmri's on the system
   console.log('%d services found.', services.length);
   console.log('Looking up last service found...');
-  smf.svcs(services[services.length - 1], function(err, svc) {
+  svcs(services[services.length - 1], function(err, svc) {
+    // svc => associative array of service information
     if (err) throw err;
     console.log(svc);
   });
@@ -90,7 +91,7 @@ smf.svcs(function(err, services) {
         state_time: 'Wed Apr 25 01:32:33 2012',
         logfile: '/var/svc/log/system-boot-archive:default.log',
         restarter: 'svc:/system/svc/restarter:default',
-        dependency: 'require_all/none svc:/system/filesystem/root (online)' }
+        dependency: [ 'require_all/none svc:/system/filesystem/root (online)' ] }
 
 ### smf.svcadm()
 
@@ -135,18 +136,38 @@ Example
     svc:/milestone/devices:default
     svc:/system/device/local:default
     svc:/system/boot-archive:default
-    root@dave.voxer.com# smf svc:/system/boot-archive:default | json
+
+
+    root@dave.voxer.com# smf name-service-cache | json
+
+``` json
+{
+  "fmri": "svc:/system/name-service-cache:default",
+  "name": "name service cache",
+  "enabled": "true",
+  "state": "online",
+  "next_state": "none",
+  "state_time": "June 19, 2012 10:06:13 PM UTC",
+  "logfile": "/var/svc/log/system-name-service-cache:default.log",
+  "restarter": "svc:/system/svc/restarter:default",
+  "contract_id": "5714820",
+  "dependency": [
+    "require_all/restart file://localhost/etc/nscd.conf (online) file://localhost/etc/nsswitch.conf (online)",
+    "require_all/none svc:/system/filesystem/minimal (online)",
+    "optional_all/refresh svc:/network/location:default (disabled)",
+    "optional_all/none svc:/system/rbac (online)"
+  ],
+  "process": [
     {
-      "fmri": "svc:/system/boot-archive:default",
-      "name": "check boot archive content",
-      "enabled": "true",
-      "state": "online",
-      "next_state": "none",
-      "state_time": "Wed Apr 25 01:32:33 2012",
-      "logfile": "/var/svc/log/system-boot-archive:default.log",
-      "restarter": "svc:/system/svc/restarter:default",
-      "dependency": "require_all/none svc:/system/filesystem/root (online)"
+      "pid": "3699",
+      "cmd": "/usr/sbin/nscd"
     }
+  ],
+  "config": "(application)",
+  "config/enable_per_user_lookup": "(boolean) = true",
+  "config/per_user_nscd_time_to_live": "(integer) = 120"
+}
+``` json
 
 License
 -------
