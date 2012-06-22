@@ -2,7 +2,7 @@
   "author": "Dave Eddy <dave@daveeddy.com> (http://www.daveeddy.com)",
   "name": "smf",
   "description": "Expose smf(5) to Node.js for Solaris/Illumos based operating systems",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "homepage": "https://github.com/bahamas10/node-smf",
   "repository": {
     "url": "https://github.com/bahamas10/node-smf.git",
