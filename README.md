@@ -138,36 +138,35 @@ Example
     svc:/system/boot-archive:default
 
 
-    root@dave.voxer.com# smf name-service-cache | json
+    root@dave.voxer.com# smf nginx | json
 
 ``` json
 {
-  "fmri": "svc:/system/name-service-cache:default",
-  "name": "name service cache",
+  "fmri": "svc:/network/nginx:default",
+  "name": "Nginx 1.0.12",
   "enabled": "true",
   "state": "online",
   "next_state": "none",
-  "state_time": "June 19, 2012 10:06:13 PM UTC",
-  "logfile": "/var/svc/log/system-name-service-cache:default.log",
+  "state_time": "May  4, 2012 07:45:13 PM PDT",
+  "logfile": "/var/svc/log/network-nginx:default.log",
   "restarter": "svc:/system/svc/restarter:default",
-  "contract_id": "5714820",
+  "contract_id": "68",
   "dependency": [
-    "require_all/restart file://localhost/etc/nscd.conf (online) file://localhost/etc/nsswitch.conf (online)",
-    "require_all/none svc:/system/filesystem/minimal (online)",
-    "optional_all/refresh svc:/network/location:default (disabled)",
-    "optional_all/none svc:/system/rbac (online)"
+    "require_all/none svc:/system/filesystem/local (online)",
+    "require_all/none svc:/network/loopback (online)"
   ],
   "process": [
     {
-      "pid": "3699",
-      "cmd": "/usr/sbin/nscd"
+      "pid": "568",
+      "cmd": "/usr/local/nginx/sbin/nginx -c /usr/local/nginx/conf/nginx.conf"
+    },
+    {
+      "pid": "569",
+      "cmd": "/usr/local/nginx/sbin/nginx -c /usr/local/nginx/conf/nginx.conf"
     }
-  ],
-  "config": "(application)",
-  "config/enable_per_user_lookup": "(boolean) = true",
-  "config/per_user_nscd_time_to_live": "(integer) = 120"
+  ]
 }
-``` json
+```
 
 License
 -------
