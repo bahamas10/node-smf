@@ -18,8 +18,6 @@ var spawn = require('child_process').spawn;
  * of services on the machine.
  */
 module.exports.svcs = function(service, callback) {
-  var svcs, args, out = '', err = '';
-
   // Check for arguments
   if (typeof service === 'function') {
     callback = service;
@@ -27,23 +25,17 @@ module.exports.svcs = function(service, callback) {
   }
 
   // Construct args
-  args = (service) ? ['-lv', service] : ['-a', '-H', '-o', 'fmri'];
+  var args = (service) ? ['-lv', service] : ['-a', '-H', '-o', 'fmri'];
 
   // Spawn the call
-  svcs = spawn('svcs', args);
-  svcs.stdout.on('data', function(data) {
-    out += data;
-  });
-  svcs.stderr.on('data', function(data) {
-    err += data;
-  });
-
-  svcs.on('exit', function(code) {
+  spawn_process('svcs', args, function(err, out, code) {
     if (err) return callback(err, null);
 
+    var ret;
     if (service) {
+      var index, key, value;
+      ret = {};
       // Parse the service output line-by-line
-      var index, key, value, ret = {};
       out.trim().split('\n').forEach(function(line) {
         // I hate javascript 'split()', poor man fix
         index = line.match(/\s+/).index;
@@ -53,15 +45,13 @@ module.exports.svcs = function(service, callback) {
         value = line.substr(index).trim();
 
         // Save the key:value. If the key already exists, make it a list
-        ret[key] = (ret[key]) ? [].concat(ret[key], value) : ret[key] = value;
+        ret[key] = (ret[key]) ? [].concat(ret[key], value) : value;
       });
-
-      // Return the resultant object
-      return callback(null, ret);
     } else {
       // Return the list of fmris
-      return callback(null, out.trim().split('\n'));
+      ret = out.trim().split('\n');
     }
+    return callback(null, ret);
   });
 };
 
@@ -69,7 +59,7 @@ module.exports.svcs = function(service, callback) {
  * Exposes information from svcadm(1M)
  */
 module.exports.svcadm = function(action, service, options, callback) {
-  var svcadm, args, out = '', err = '', options = options || {};
+  var args, options = options || {};
 
   // Check for arguments
   if (!service) throw new Error('Not enough arguments supplied');
@@ -87,16 +77,29 @@ module.exports.svcadm = function(action, service, options, callback) {
   args = args.concat(service);
 
   // Spawn the call
-  svcadm = spawn('svcadm', args);
-  svcadm.stdout.on('data', function(data) {
-    out += data;
-  });
-  svcadm.stderr.on('data', function(data) {
-    err += data;
-  });
-
-  svcadm.on('exit', function(code) {
+  spawn_process('svcadm', args, function(err, out, code) {
     if (err) return callback(err, code);
     return callback(null, code);
   });
 };
+
+/**
+ * Internal function to easily spawn a child
+ * and get the stdout, stderr, and exit code
+ */
+function spawn_process(prog, args, callback) {
+  var out = '',
+      err = '',
+      child = spawn(prog, args);
+
+  child.stdout.on('data', function(data) {
+    out += data;
+  });
+  child.stderr.on('data', function(data) {
+    err += data;
+  });
+
+  child.on('exit', function(code) {
+    return callback(err, out, code);
+  });
+}
