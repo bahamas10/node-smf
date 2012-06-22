@@ -52,7 +52,7 @@ module.exports.svcs = function(service, callback) {
           case 'process':
             var obj = {},
                 i = value.indexOf(' ');
-            obj.pid = value.substr(0, i);
+            obj.pid = +value.substr(0, i);
             obj.cmd = value.substr(i+1);
             value = obj;
             if (!ret[key]) value = [value];
