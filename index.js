@@ -87,9 +87,9 @@ module.exports.svcadm = function(action, service, options, callback) {
 
   // Construct args
   var args = [action];
-  if (options.temporary) args = args.concat('-t');
-  if (options.wait) args = args.concat('-s');
-  args = args.concat(service);
+  if (options.temporary) args.push('-t');
+  if (options.wait) args.push('-s');
+  args.push(service);
 
   // Spawn the call
   spawn_process('svcadm', args, function(err, out, code) {
