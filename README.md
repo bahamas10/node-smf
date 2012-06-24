@@ -147,13 +147,13 @@ Get information about the nginx service
 {
   "fmri": "svc:/network/nginx:default",
   "name": "Nginx 1.0.12",
-  "enabled": "true",
+  "enabled": true,
   "state": "online",
   "next_state": "none",
   "state_time": "May  4, 2012 07:45:13 PM PDT",
   "logfile": "/var/svc/log/network-nginx:default.log",
   "restarter": "svc:/system/svc/restarter:default",
-  "contract_id": "68",
+  "contract_id": 68,
   "dependency": [
     "require_all/none svc:/system/filesystem/local (online)",
     "require_all/none svc:/network/loopback (online)"

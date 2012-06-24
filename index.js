@@ -7,7 +7,8 @@
  * License: MIT
  */
 
-var spawn = require('child_process').spawn;
+var autocast = require('autocast'),
+    spawn = require('child_process').spawn;
 
 /**
  * Exposes information from svcs(1)
@@ -42,7 +43,7 @@ module.exports.svcs = function(service, callback) {
 
         // Extract the key and the value
         key = line.substr(0, index);
-        value = line.substr(index).trim();
+        value = autocast(line.substr(index).trim());
 
         // Key specific parsing
         switch (key) {
