@@ -173,7 +173,7 @@ Get information about the nginx service
 }
 ```
 
-Get the logs from a service (easier than `tail -20 "$(svcs -L <service>)"`
+Get the logs from a service (easier than `tail -20 "$(svcs -L <service>)"`)
 
     root@dave.voxer.com# smf tail name-services
     /var/svc/log/milestone-name-services:default.log
