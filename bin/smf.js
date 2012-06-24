@@ -44,5 +44,6 @@ switch (action) {
     break;
   default:
     console.error('Unsupported Action');
+    process.exit(1);
     break;
 }
