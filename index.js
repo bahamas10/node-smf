@@ -29,7 +29,7 @@ module.exports.svcs = function(service, callback) {
   var args = (service) ? ['-lvp', service] : ['-a', '-H', '-o', 'fmri'];
 
   // Spawn the call
-  spawn_process('svcs', args, function(err, out, code) {
+  var child = spawn_process('svcs', args, function(err, out, code) {
     if (err) return callback(err, null);
 
     var ret;
@@ -69,6 +69,7 @@ module.exports.svcs = function(service, callback) {
     }
     return callback(null, ret);
   });
+  return child;
 };
 
 /**
@@ -93,10 +94,11 @@ module.exports.svcadm = function(action, service, options, callback) {
   args.push(service);
 
   // Spawn the call
-  spawn_process('svcadm', args, function(err, out, code) {
+  var child = spawn_process('svcadm', args, function(err, out, code) {
     if (err) return callback(err, code);
     return callback(null, code);
   });
+  return child;
 };
 
 /**
@@ -118,4 +120,6 @@ function spawn_process(prog, args, callback) {
   child.on('exit', function(code) {
     return callback(err, out, code);
   });
+
+  return child;
 }
