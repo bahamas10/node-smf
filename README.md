@@ -85,7 +85,7 @@ svcs(function(err, services) {
     Looking up last service found...
     { fmri: 'svc:/system/boot-archive:default',
         name: 'check boot archive content',
-        enabled: 'true',
+        enabled: true,
         state: 'online',
         next_state: 'none',
         state_time: 'Wed Apr 25 01:32:33 2012',
