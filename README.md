@@ -129,6 +129,8 @@ any arguments to get a newline separated list of service fmri's
 on the system.  Run it with a service-name argument to get a json
 object of information about the given service.
 
+Inspired by the smf bash script by [@dshaw][dshaw].
+
 Example
 -------
 
@@ -171,7 +173,20 @@ Get information about the nginx service
 }
 ```
 
+Get the logs from a service (easier than `tail -20 "$(svcs -L <service>)"`
+
+    root@dave.voxer.com# smf tail name-services
+    /var/svc/log/milestone-name-services:default.log
+    [ Apr 25 01:32:33 Enabled. ]
+    [ Apr 25 01:32:35 Executing start method (null). ]
+
+    root@dave.voxer.com# smf -L name-services
+    /var/svc/log/milestone-name-services:default.log
+
 License
 -------
 
 MIT Licensed
+
+
+[dshaw]: https://github.com/dshaw
