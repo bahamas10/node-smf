@@ -3,7 +3,7 @@
  * smf command line tool
  */
 
-var smf = require('smf'),
+var smf = require('../'),
     exec = require('child_process').exec,
     action = process.argv[2],
     service = process.argv[3];
