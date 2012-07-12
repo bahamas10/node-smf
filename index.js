@@ -30,7 +30,7 @@ module.exports.svcs = function(service, callback) {
 
   // Spawn the call
   var child = spawn_process('svcs', args, function(err, out, code) {
-    if (err) return callback(err, null);
+    if (err || !out) return callback(err || 'No Output', null);
 
     var ret;
     if (service) {
