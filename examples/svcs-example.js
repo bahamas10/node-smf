@@ -6,7 +6,7 @@ svcs(function(err, services) {
   console.log(services);
 });
 
-svcs('nginx', function(err, svc) {
+svcs('boot-archive', function(err, svc) {
   // svc => an associative array of service information
   console.log(svc);
 });
