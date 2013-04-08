@@ -13,9 +13,11 @@ if (!action) {
   // No arguments supplied, just list services on system
   smf.svcs(function(err, services) {
     if (err) throw err;
-    console.log(services.join('\n'));
+    services.forEach(function(a) {
+      console.log(a.fmri);
+    });
   });
-  return 0;
+  return;
 } else if (!service) {
   // Only 1 argument found, assume it is the service
   service = action;
@@ -23,7 +25,7 @@ if (!action) {
     if (err) throw err;
     console.log(JSON.stringify(svc, null, '  '));
   });
-  return 0;
+  return;
 }
 
 // Find the appropriate action

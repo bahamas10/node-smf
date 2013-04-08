@@ -33,7 +33,7 @@ Functions
 ### smf.svcs(callback(err, services))
 
 Call `smf.svcs` with a single callback argument to get a list of service fmri's
-on the system.
+and states on the system.
 
 ### smf.svcs('name', callback(err, svc))
 
@@ -67,31 +67,53 @@ Example
 
 ### smf.svcs()
 
+get a list of all services and their states
+
 ``` js
 var svcs = require('smf').svcs;
 svcs(function(err, services) {
   // services => list of all service fmri's on the system
-  console.log('%d services found.', services.length);
-  console.log('Looking up last service found...');
-  svcs(services[services.length - 1], function(err, svc) {
-    // svc => associative array of service information
-    if (err) throw err;
-    console.log(svc);
-  });
 });
 ```
 
-    161 services found.
-    Looking up last service found...
-    { fmri: 'svc:/system/boot-archive:default',
-        name: 'check boot archive content',
-        enabled: true,
-        state: 'online',
-        next_state: 'none',
-        state_time: 'Wed Apr 25 01:32:33 2012',
-        logfile: '/var/svc/log/system-boot-archive:default.log',
-        restarter: 'svc:/system/svc/restarter:default',
-        dependency: [ 'require_all/none svc:/system/filesystem/root (online)' ] }
+yields
+
+``` js
+[ { state: 'legacy_run', fmri: 'lrc:/etc/rc2_d/S98deallocate' },
+  { state: 'legacy_run', fmri: 'lrc:/etc/rc2_d/S89PRESERVE' },
+  { state: 'legacy_run', fmri: 'lrc:/etc/rc2_d/S72autoinstall' },
+  { state: 'legacy_run', fmri: 'lrc:/etc/rc2_d/S20sysetup' },
+  { state: 'disabled', fmri: 'svc:/pkgsrc/denyhosts:default' },
+  { state: 'online',
+    fmri: 'svc:/application/splunk:default' },
+  { state: 'disabled', fmri: 'svc:/network/denyhosts:default' },
+  { state: 'disabled',
+    fmri: 'svc:/application/testing/nginx:default' },
+...
+]
+```
+
+get information about a specific service
+
+``` js
+svcs('boot-archive', function(err, svc) {
+  // svc => associative array of service information
+});
+```
+
+yields
+
+```
+{ fmri: 'svc:/system/boot-archive:default',
+  name: 'check boot archive content',
+  enabled: true,
+  state: 'online',
+  next_state: 'none',
+  state_time: 'Wed Apr 25 01:32:33 2012',
+  logfile: '/var/svc/log/system-boot-archive:default.log',
+  restarter: 'svc:/system/svc/restarter:default',
+  dependency: [ 'require_all/none svc:/system/filesystem/root (online)' ] }
+```
 
 ### smf.svcadm()
 
