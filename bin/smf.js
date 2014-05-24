@@ -3,16 +3,17 @@
  * smf command line tool
  */
 
-var smf = require('../'),
-    exec = require('child_process').exec,
-    action = process.argv[2],
-    service = process.argv[3];
+var smf = require('../');
+var exec = require('child_process').exec;
+var action = process.argv[2];
+var service = process.argv[3];
 
 // Check arguments
 if (!action) {
   // No arguments supplied, just list services on system
   smf.svcs(function(err, services) {
-    if (err) throw err;
+    if (err)
+      throw err;
     services.forEach(function(a) {
       console.log(a.fmri);
     });
@@ -22,8 +23,9 @@ if (!action) {
   // Only 1 argument found, assume it is the service
   service = action;
   smf.svcs(service, function(err, svc) {
-    if (err) throw err;
-    console.log(JSON.stringify(svc, null, '  '));
+    if (err)
+      throw err;
+    console.log(JSON.stringify(svc, null, 2));
   });
   return;
 }
@@ -35,11 +37,13 @@ switch (action) {
   case '-L':
     // Tail the log
     smf.svcs(service, function(err, svc) {
-      if (err || !svc.logfile) throw err;
+      if (err || !svc.logfile)
+        throw err;
       console.log(svc.logfile);
       if (action === '-L') return 0;
       exec('tail -20 '+svc.logfile, function(err, stdout, stderr) {
-        if (err) throw err;
+        if (err)
+          throw err;
         console.log(stdout);
       });
     });
