@@ -35,10 +35,14 @@ Functions
 Call `smf.svcs` with a single callback argument to get a list of service fmri's
 and states on the system.
 
-### smf.svcs(name, callback(err, svc))
+### smf.svcs([name, ...], callback(err, svc))
 
-Call `smf.svcs` with a service name and a callback to get information
-about the given service.
+Call `smf.svcs` with a service name (or array of service names) and a callback
+to get information about the given service.
+
+If the first argument is an array the service information will be an array of
+objects, otherwise if the first argument is a string the service information
+will be a single object.
 
 ---
 
